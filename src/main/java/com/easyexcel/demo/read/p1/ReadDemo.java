@@ -8,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,15 @@ public class ReadDemo {
 
         @Override
         public void invoke(ParentData data, AnalysisContext context) {
+           /* if(data instanceof THData){
+                THData thData =(THData)data;
+                BigDecimal bigDecimal = thData.getBigDecimalData().round(new MathContext(10, RoundingMode.HALF_UP));
+                thData.setBigDecimalData(bigDecimal);
+            }*/
+
+            BigDecimal bigDecimal = data.getBigDecimalData().round(new MathContext(10, RoundingMode.HALF_UP));
+            data.setBigDecimalData(bigDecimal);
+
             LOGGER.info("解析到一条数据:{}", data);
 
             list.add(data);
