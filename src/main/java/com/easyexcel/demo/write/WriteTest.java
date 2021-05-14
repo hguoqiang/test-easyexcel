@@ -203,5 +203,24 @@ public class WriteTest {
 
 
 
+    @Test
+    public void deleteDirectory() {
+
+        try {
+            String fileName = "D:\\hah\\ou\\20210514";
+            org.apache.commons.io.FileUtils.deleteDirectory(new File(fileName));
+
+
+//            String fileName = "D:\\hah\\ou\\demo.xls";
+//            org.apache.commons.io.FileUtils.deleteQuietly(new File(fileName));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
 
 }

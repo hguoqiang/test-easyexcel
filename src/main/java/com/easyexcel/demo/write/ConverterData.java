@@ -32,3 +32,14 @@ public class ConverterData {
     @ExcelProperty(value = "数字标题")
     private Double doubleData;
 }
+
+
+      /*  INSERT INTO `goods` VALUES ('1',  'idx_prod11','prod11', '1000');
+        INSERT INTO `goods` VALUES ('2',  'idx_prod12','prod12', '1000');
+        INSERT INTO `goods` VALUES ('3',  'idx_prod13','prod13', '1000');
+        INSERT INTO `goods` VALUES ('4',  'idx_prod14','prod14', '1000');
+        INSERT INTO `goods` VALUES ('5',  'idx_prod15','prod15', '1000');
+        INSERT INTO `goods` VALUES ('6',  'idx_prod16','prod16', '1000');
+        INSERT INTO `goods` VALUES ('7',  'idx_prod17','prod17', '1000');
+        INSERT INTO `goods` VALUES ('8',  'idx_prod18','prod18', '1000');
+        INSERT INTO `goods` VALUES ('9',  'idx_prod19','prod19', '1000');*/

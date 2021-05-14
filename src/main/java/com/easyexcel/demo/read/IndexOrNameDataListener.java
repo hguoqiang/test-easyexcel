@@ -2,7 +2,6 @@ package com.easyexcel.demo.read;
 
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
-import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +23,8 @@ public class IndexOrNameDataListener extends AnalysisEventListener<IndexOrNameDa
 
     @Override
     public void invoke(IndexOrNameData data, AnalysisContext context) {
-        LOGGER.info("解析到一条数据:{}", JSON.toJSONString(data));
+        LOGGER.info("解析到一条数据:{}", data);
+
         list.add(data);
         if (list.size() >= BATCH_COUNT) {
             saveData();
