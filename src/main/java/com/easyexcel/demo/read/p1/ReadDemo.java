@@ -29,14 +29,23 @@ public class ReadDemo {
      */
     private static String LINE_SEPARATOR;
 
-    private static final String INTEGER_REG = "^[-\\+]?[\\d]*$";
+    private static final String INTEGER_REG = "^[\\d]*$";
     private static Pattern PATTERN;
+
     static {
         LINE_SEPARATOR = System.getProperty("line.separator");
         PATTERN = Pattern.compile(INTEGER_REG);
     }
+
     @Test
     public void test1() {
+
+        if (new BigDecimal(0).compareTo(BigDecimal.ZERO) <= 0) {
+            System.out.println("转账金额(必须大于0)");
+
+        }
+
+
         String str1 = "12E+5";
 
 
@@ -52,14 +61,46 @@ public class ReadDemo {
         System.out.println("b_dec1.toPlainString(): " + str_conv);
         System.out.println("b_dec1.toString(): " + str_conv2);
 
-        System.out.println(isInteger("00012443"));
+        System.out.println("isAllNumber: "+ isAllNumber("00012443"));
+
+
+        System.out.println("--------------");
+        boolean b = checkDecimalPoint(new BigDecimal("01.35"), 2);
+        System.out.println(b);
+
     }
 
-    private boolean isInteger(String str) {
+    /**
+     * 判断字符串是否是全数字
+     * @param str
+     * @return
+     */
+    private boolean isAllNumber(String str) {
         if (str == null) {
             return false;
         }
         return PATTERN.matcher(str).matches();
+    }
+
+    /**
+     * 校验数字小数点后是否超过指定的数位
+     * @param decimal 被校验数字
+     * @param decimalPlaces 小数点位数
+     * @return
+     */
+    private boolean checkDecimalPoint(BigDecimal decimal, int decimalPlaces) {
+        if (decimal == null) {
+            return false;
+        }
+        String decimalStr = decimal.toString();
+        int index = decimalStr.lastIndexOf(".");
+        if (index > 0) {
+            if (decimalStr.substring(index + 1).length() > decimalPlaces) {
+                System.out.println("小数点超过2位");
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -137,7 +178,7 @@ public class ReadDemo {
                 System.out.println("第四类数据是空的");
             }*/
 
-            System.out.println(data.getBigDecimalData().toPlainString()+ " isInteger: " +isInteger(data.getBigDecimalData().toString()));
+            System.out.println(data.getBigDecimalData().toString() + " isAllNumber: " + isAllNumber(data.getBigDecimalData().toString()));
 
 
             list.add(data);
@@ -199,5 +240,20 @@ public class ReadDemo {
                 throw exception;
             }
         }
+    }
+
+
+
+    @Test
+    public void testPage(){
+        int pageNum = 1;
+        int totalPages;
+        do {
+            System.out.println("查询第：" +pageNum);
+            totalPages = 6;
+
+            pageNum++;
+
+        } while (pageNum <= totalPages);
     }
 }

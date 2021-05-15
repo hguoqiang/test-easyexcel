@@ -50,6 +50,8 @@ public class DemoHeadDataListener extends AnalysisEventListener<DemoData> {
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
         LOGGER.info("解析到一条头数据:{}", JSON.toJSONString(headMap));
+        LOGGER.info("解析头结束");
+
     }
 
     @Override
