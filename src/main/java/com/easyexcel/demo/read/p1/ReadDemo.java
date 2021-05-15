@@ -10,8 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -21,6 +23,46 @@ import java.util.stream.Collectors;
  **/
 
 public class ReadDemo {
+
+    /**
+     * 换行符
+     */
+    private static String LINE_SEPARATOR;
+
+    private static final String INTEGER_REG = "^[-\\+]?[\\d]*$";
+    private static Pattern PATTERN;
+    static {
+        LINE_SEPARATOR = System.getProperty("line.separator");
+        PATTERN = Pattern.compile(INTEGER_REG);
+    }
+    @Test
+    public void test1() {
+        String str1 = "12E+5";
+
+
+        // Initializes two BigDecimal objects
+        BigDecimal b_dec1 = new BigDecimal(str1);
+
+
+        // By using toPlainString() method is
+        // used to represent this BigDecimal b_dec1 as
+        // a String without using the engineering notation
+        String str_conv = b_dec1.toPlainString();
+        String str_conv2 = b_dec1.toString();
+        System.out.println("b_dec1.toPlainString(): " + str_conv);
+        System.out.println("b_dec1.toString(): " + str_conv2);
+
+        System.out.println(isInteger("00012443"));
+    }
+
+    private boolean isInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        return PATTERN.matcher(str).matches();
+    }
+
+
     @Test
     public void ttest() {
         String msg;
@@ -91,6 +133,13 @@ public class ReadDemo {
             /*if (data.getBigDecimalData().compareTo(new BigDecimal("1.23")) == 0) {
                 throw new RuntimeException("主动抛出");
             }*/
+           /* if (data.getFour() == null) {
+                System.out.println("第四类数据是空的");
+            }*/
+
+            System.out.println(data.getBigDecimalData().toPlainString()+ " isInteger: " +isInteger(data.getBigDecimalData().toString()));
+
+
             list.add(data);
             if (list.size() >= BATCH_COUNT) {
                 saveData();
@@ -111,6 +160,7 @@ public class ReadDemo {
             LOGGER.info("{}条数据，开始存储数据库！", list.size());
             LOGGER.info("存储数据库成功！");
         }
+
 
         /**
          * 在转换异常 获取其他异常下会调用本接口。抛出异常则停止读取。如果这里不抛出异常则 继续读取下一行。
