@@ -3,8 +3,10 @@ package com.easyexcel.demo.write;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
 import com.alibaba.excel.annotation.format.NumberFormat;
+import com.alibaba.excel.converters.bigdecimal.BigDecimalStringConverter;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -28,9 +30,9 @@ public class ConverterData {
     /**
      * 我想写到excel 用百分比表示
      */
-    @NumberFormat("#.##%")
-    @ExcelProperty(value = "数字标题")
-    private Double doubleData;
+    @NumberFormat("#.##")
+    @ExcelProperty(value = "数字标题",converter = BigDecimalStringConverter.class )
+    private BigDecimal doubleData;
 }
 
 

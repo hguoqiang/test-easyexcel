@@ -5,6 +5,8 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelDataConvertException;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
+import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,13 +31,48 @@ public class ReadDemo {
      */
     private static String LINE_SEPARATOR;
 
+    /**
+     * 全数字
+     */
     private static final String INTEGER_REG = "^[\\d]*$";
-    private static Pattern PATTERN;
+    private static Pattern PATTERN_INTEGER_REG;
+
+    /**
+     * 数字 字母 下划线 中划线
+     */
+    private static Pattern PATTERN_EN_INTEGER_UNDERLINE_REG;
+    private static final String EN_INTEGER_UNDERLINE_REG =  "^[0-9a-zA-Z_-]{1,}$";
+
+    /**
+     * 数字 字母
+     */
+    private static Pattern PATTERN_EN_INTEGER_REG;
+    private static final String EN_INTEGER_REG = "^[0-9a-zA-Z]{1,}$";
+
+    /**
+     * 电子邮件
+     */
+    private static Pattern PATTERN_EMAIL_REG;
+    private static final String EMAIL_REG = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
 
     static {
         LINE_SEPARATOR = System.getProperty("line.separator");
-        PATTERN = Pattern.compile(INTEGER_REG);
+        PATTERN_INTEGER_REG = Pattern.compile(INTEGER_REG);
+        PATTERN_EN_INTEGER_UNDERLINE_REG = Pattern.compile(EN_INTEGER_UNDERLINE_REG);
+        PATTERN_EN_INTEGER_REG = Pattern.compile(EN_INTEGER_REG);
+        PATTERN_EMAIL_REG = Pattern.compile(EMAIL_REG);
     }
+
+
+    @Test
+    public void test222() {
+
+        System.out.println(PATTERN_EN_INTEGER_REG.matcher("88f8").matches());
+        System.out.println(PATTERN_EMAIL_REG.matcher("921yg@qq.co").matches());
+    }
+
+
+
 
     @Test
     public void test1() {
@@ -61,7 +98,7 @@ public class ReadDemo {
         System.out.println("b_dec1.toPlainString(): " + str_conv);
         System.out.println("b_dec1.toString(): " + str_conv2);
 
-        System.out.println("isAllNumber: "+ isAllNumber("00012443"));
+        System.out.println("isAllNumber: " + isAllNumber("00012443"));
 
 
         System.out.println("--------------");
@@ -72,6 +109,7 @@ public class ReadDemo {
 
     /**
      * 判断字符串是否是全数字
+     *
      * @param str
      * @return
      */
@@ -79,12 +117,13 @@ public class ReadDemo {
         if (str == null) {
             return false;
         }
-        return PATTERN.matcher(str).matches();
+        return PATTERN_INTEGER_REG.matcher(str).matches();
     }
 
     /**
      * 校验数字小数点后是否超过指定的数位
-     * @param decimal 被校验数字
+     *
+     * @param decimal       被校验数字
      * @param decimalPlaces 小数点位数
      * @return
      */
@@ -243,17 +282,120 @@ public class ReadDemo {
     }
 
 
-
     @Test
-    public void testPage(){
+    public void testPage() {
         int pageNum = 1;
         int totalPages;
         do {
-            System.out.println("查询第：" +pageNum);
+            System.out.println("查询第：" + pageNum);
             totalPages = 6;
 
             pageNum++;
 
         } while (pageNum <= totalPages);
     }
+
+    @Data
+    private class TestData {
+
+        private String payeeAccountName;
+        private String payeeAccountNo;
+        private String payeeAccountMobile;
+        private String bankName;
+        private BigDecimal amount;
+        private String description;
+
+    }
+
+    @Test
+    public void test2() {
+        ArrayList checkErrorMsgList = new ArrayList<>();
+
+        StringBuilder sp = null;
+        for (int i = 0; i < 5; i++) {
+            boolean saveFlag = false;
+            TestData data = new TestData();
+
+            sp = new StringBuilder("行号: ");
+            sp.append(1);
+
+            //行号：1  转账金额（必须输入），收款方账户名（必须输入），收款方账号（只可输入数字），收款方手机号（手机号位数不正确），转账说明（必须输入）
+            //收款方账户名不能是空的
+            if (org.apache.commons.lang3.StringUtils.isAllBlank(data.getPayeeAccountName())) {
+                sp.append(", 收款方账户名(必须输入)");
+                saveFlag = true;
+            }
+            //收款方账号只能是数字
+            String payeeAccountNo = data.getPayeeAccountNo();
+            if (StringUtils.isAllBlank(payeeAccountNo)) {
+                saveFlag = true;
+                sp.append(", 收款方账号(必须输入)");
+            } else {
+                if (!isAllNumber(payeeAccountNo)) {
+                    saveFlag = true;
+                    sp.append(", 收款方账号(只可输入数字)");
+                }
+            }
+
+            //收款方手机号只能是数字 位数限制
+            String payeeAccountMobile = data.getPayeeAccountMobile();
+            if (StringUtils.isAllBlank(payeeAccountMobile)) {
+                saveFlag = true;
+                sp.append(" ,收款方手机号(必须输入)");
+            } else {
+                if (!isAllNumber(payeeAccountMobile)) {
+                    saveFlag = true;
+                    sp.append(" ,收款方手机号(只可输入数字)");
+                }
+            }
+            //收款方银行名称不能是空
+            if (StringUtils.isAllBlank(data.getBankName())) {
+                saveFlag = true;
+                sp.append(", 收款方银行(必须输入)");
+            }
+
+            //转账金额必须是数字 正数
+            BigDecimal amount = data.getAmount();
+            if (data.getAmount() == null) {
+                sp.append(", 转账金额(必须输入)");
+            } else {
+                if (StringUtils.isAllBlank(amount.toString())) {
+                    saveFlag = true;
+                    sp.append(", 转账金额(必须输入)");
+                } else {
+                    //转账金额 可以是两位小数
+                    if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+                        saveFlag = true;
+                        sp.append(", 转账金额(必须大于0)");
+                    }
+                    if (!isAllNumber(amount.toString())) {
+                        saveFlag = true;
+                        sp.append(", 转账金额(只可输入数字)");
+                    }
+                    //如果有小数不能超过2位
+                    if (!checkDecimalPoint(amount, 2)) {
+                        saveFlag = true;
+                        sp.append(", 转账金额(只可输入数字)");
+                    }
+                }
+            }
+
+            //转账说明必须输入
+            if (StringUtils.isAllBlank(data.getDescription())) {
+                saveFlag = true;
+                sp.append(", 转账说明(必须输入)");
+            }
+            if (saveFlag) {
+
+                checkErrorMsgList.add(sp.toString());
+            }
+        }
+
+        System.out.println("-----------------------");
+        checkErrorMsgList.forEach(System.out::println);
+    }
+
+
+
+
 }

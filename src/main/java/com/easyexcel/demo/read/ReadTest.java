@@ -6,6 +6,9 @@ import com.alibaba.excel.converters.DefaultConverterLoader;
 import org.junit.Test;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @description: 读的常见写法
@@ -28,7 +31,8 @@ public class ReadTest {
     public void simpleRead() {
         // 有个很重要的点 DemoDataListener 不能被spring管理，要每次读取excel都要new,然后里面用到spring可以构造方法传进去
         // 写法1：
-        String fileName = "D:\\test" + File.separator + "demo.xls";
+        //String fileName = "D:\\test" + File.separator + "demo.xls";
+        String fileName = "D:\\test" + File.separator + "null.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
         EasyExcel.read(fileName, DemoData.class, new DemoDataListener()).sheet().doRead();
 
@@ -65,7 +69,12 @@ public class ReadTest {
         // 这里默认读取第一个sheet
         EasyExcel.read(fileName, IndexOrNameData.class, new IndexOrNameDataListener()).sheet().doRead();
     }
-
+    @Test
+    public void TransferExcelDataRead() {
+        String fileName = "D:\\test"  + File.separator + "批量转账模板-20210415.xlsx";
+        // 这里默认读取第一个sheet
+        EasyExcel.read(fileName, TransferExcelData.class, new TransferExcelDataReadListener()).sheet().doRead();
+    }
 
     /**
      * 日期、数字或者自定义格式转换
@@ -103,7 +112,38 @@ public class ReadTest {
     @Test
     public void headerRead() {
         String fileName = "D:\\test"  + File.separator + "demo.xls";
+         fileName = "C:\\Users\\hguoq\\Desktop"  + File.separator + "Bulk Transfer Template.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet
         EasyExcel.read(fileName, DemoData.class, new DemoHeadDataListener()).sheet().doRead();
+    }
+
+
+    @Test
+    public void headerRead11() {
+        String fileName = "C:\\Users\\hguoq\\Desktop"  + File.separator + "Bulk Transfer Template.xlsx";
+        // 这里 需要指定读用哪个class去读，然后读取第一个sheet
+        EasyExcel.read(fileName, TransferExcelData.class, new TransferExcelDataReadListener()).sheet().doRead();
+    }
+
+    @Test
+    public void add(){
+
+        BigDecimal totalAmount = BigDecimal.ZERO;
+
+        List<TransferExcelData> allList = new ArrayList<>();
+        TransferExcelData d1 = new TransferExcelData();
+        TransferExcelData d2 = new TransferExcelData();
+        TransferExcelData d3 = new TransferExcelData();
+        d1.setAmount(new BigDecimal(12));
+        d2.setAmount(new BigDecimal(12));
+        d3.setAmount(new BigDecimal(12));
+        allList.add(d1);
+        allList.add(d1);
+        allList.add(d1);
+
+        BigDecimal reduce = allList.stream().map(TransferExcelData::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        System.out.println(reduce);
+        System.out.println("201020235711498241_batch_tansfer_20210520211642.xlsx".length());
     }
 }
