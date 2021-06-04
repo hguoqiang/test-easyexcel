@@ -53,7 +53,9 @@ public class ReadDemo {
      * 电子邮件
      */
     private static Pattern PATTERN_EMAIL_REG;
-    private static final String EMAIL_REG = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
+    //private static final String EMAIL_REG = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
+    //private static final String EMAIL_REG ="^[a-z0-9A-Z]+[- | a-z0-9A-Z . _]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,}$";
+    private static final String EMAIL_REG ="^[A-Za-z0-9\\u4e00-\\u9fa5._-]+@[a-zA-Z0-9_-]+([.]+[a-zA-Z0-9_-]+)+$"; //王博
 
     static {
         LINE_SEPARATOR = System.getProperty("line.separator");
@@ -67,8 +69,8 @@ public class ReadDemo {
     @Test
     public void test222() {
 
-        System.out.println(PATTERN_EN_INTEGER_REG.matcher("88f8").matches());
-        System.out.println(PATTERN_EMAIL_REG.matcher("921yg@qq.co").matches());
+        //System.out.println(PATTERN_EN_INTEGER_REG.matcher("88f8").matches());
+        System.out.println(PATTERN_EMAIL_REG.matcher("ed.1.2.9i@qq.com").matches());
     }
 
 

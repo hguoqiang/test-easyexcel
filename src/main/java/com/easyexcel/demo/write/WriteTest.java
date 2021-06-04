@@ -40,13 +40,13 @@ public class WriteTest {
     @Test
     public void simpleWrite() {
         // 写法1
-        String fileName = "D:\\test"  + File.separator + "simpleWrite" + System.currentTimeMillis() + ".xlsx";
+        String fileName = "D:\\test" + File.separator + "simpleWrite" + System.currentTimeMillis() + ".xlsx";
         // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
         // 如果这里想使用03 则 传入excelType参数即可
         EasyExcel.write(fileName, DemoData.class).sheet("模板").doWrite(data());
 
         // 写法2
-        fileName = "D:\\test"  + File.separator + "simpleWrite" + System.currentTimeMillis() + ".xlsx";
+        fileName = "D:\\test" + File.separator + "simpleWrite" + System.currentTimeMillis() + ".xlsx";
         // 这里 需要指定写用哪个class去写
         ExcelWriter excelWriter = null;
         try {
@@ -62,7 +62,6 @@ public class WriteTest {
     }
 
 
-
     /**
      * 根据参数只导出指定列
      * <p>
@@ -76,7 +75,7 @@ public class WriteTest {
      */
     @Test
     public void excludeOrIncludeWrite() {
-        String fileName = "D:\\test"  + File.separator + "excludeOrIncludeWrite" + System.currentTimeMillis() + ".xlsx";
+        String fileName = "D:\\test" + File.separator + "excludeOrIncludeWrite" + System.currentTimeMillis() + ".xlsx";
 
         // 根据用户传入字段 假设我们要忽略 date
         Set<String> excludeColumnFiledNames = new HashSet<String>();
@@ -85,7 +84,7 @@ public class WriteTest {
         EasyExcel.write(fileName, DemoData.class).excludeColumnFiledNames(excludeColumnFiledNames).sheet("模板")
                 .doWrite(data());
 
-        fileName = "D:\\test"  + File.separator  + "excludeOrIncludeWrite" + System.currentTimeMillis() + ".xlsx";
+        fileName = "D:\\test" + File.separator + "excludeOrIncludeWrite" + System.currentTimeMillis() + ".xlsx";
         // 根据用户传入字段 假设我们只要导出 date
         Set<String> includeColumnFiledNames = new HashSet<String>();
         includeColumnFiledNames.add("date");
@@ -106,11 +105,10 @@ public class WriteTest {
      */
     @Test
     public void indexWrite() {
-        String fileName = "D:\\test"  + File.separator  + "indexWrite" + System.currentTimeMillis() + ".xlsx";
+        String fileName = "D:\\test" + File.separator + "indexWrite" + System.currentTimeMillis() + ".xlsx";
         // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
         EasyExcel.write(fileName, IndexData.class).sheet("模板").doWrite(data());
     }
-
 
 
     /**
@@ -125,7 +123,7 @@ public class WriteTest {
     @Test
     public void repeatedWrite() {
         // 方法1 如果写到同一个sheet
-        String fileName = "D:\\test"  + File.separator + "repeatedWrite" + System.currentTimeMillis() + ".xlsx";
+        String fileName = "D:\\test" + File.separator + "repeatedWrite" + System.currentTimeMillis() + ".xlsx";
         ExcelWriter excelWriter = null;
         try {
             // 这里 需要指定写用哪个class去写
@@ -197,17 +195,18 @@ public class WriteTest {
      */
     @Test
     public void converterWrite() {
-        String fileName = "D:\\test"  + File.separator + "converterWrite" + System.currentTimeMillis() + ".xlsx";
+        String fileName = "D:\\test" + File.separator + "converterWrite" + System.currentTimeMillis() + ".xlsx";
         // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
         EasyExcel.write(fileName, ConverterData.class).sheet("模板").doWrite(bigdecimalData());
     }
+
     private List<ConverterData> bigdecimalData() {
         List<ConverterData> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             ConverterData data = new ConverterData();
             data.setString("字符串" + i);
             data.setDate(new Date());
-            data.setDoubleData(new BigDecimal(119.00).setScale(2,BigDecimal.ROUND_UP));
+            data.setDoubleData(new BigDecimal(119.00).setScale(2, BigDecimal.ROUND_UP));
             list.add(data);
         }
         return list;
@@ -230,6 +229,24 @@ public class WriteTest {
         }
 
 
+    }
+
+
+    @Test
+    public void ttt() {
+
+        /*DemoData demoData = new DemoData();
+        demoData.setDate(new Date());
+        demoData.setDoubleData(123.98);
+        Long l1 = new Long(34L);
+        Long l2 = new Long(12L);
+        demoData.setL1(l1);
+        demoData.setL2(l2);
+
+        demoData.setTotal(demoData.getL1()+demoData.getL2());
+        System.out.println(demoData);*/
+
+        System.out.println("0019593192001959319212345".length());
 
     }
 

@@ -24,4 +24,10 @@ public class DemoData {
      */
     @ExcelIgnore
     private String ignore;
+
+    private Long l1;
+    private Long l2;
+    private Long total;
+
+
 }
